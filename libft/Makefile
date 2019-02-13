@@ -136,7 +136,8 @@ OBJ += $(addprefix ./$(OBJ_PATH)/, $(SRCS_PRINTF:.c=.o))
 all: $(OBJ_PATH) $(NAME)
 
 $(NAME): $(OBJ)
-	@printf " Objects created ✓\n"
+	@printf "\r⸨`printf '▓%.s' {0..$(PROGRESS)}`⸩"
+	@printf " Objects created $(BOLD_GREEN)✓$(EOC)\n"
 	@printf "Start making $(NAME)...\n"
 	@$(AR) $(NAME) $^
 	@ranlib $(NAME)
@@ -149,11 +150,11 @@ $(OBJ_PATH):
 
 $(OBJ_PATH)/%.o: $(SRCS_PATH)/%.c $(HEAD)
 	@$(eval PROGRESS=$(shell echo $$(($(INDEX)*30/$(NUMBER_FILES)))))
-	@$(eval NOT_DONE=$(shell echo $$((30-$(INDEX)*30/$(NUMBER_FILES) + 2))))
+	@$(eval NOT_DONE=$(shell echo $$((30-$(INDEX)*30/$(NUMBER_FILES) - 1))))
 	@$(CC) $(FLAGS) $(C_FLAGS) $(INC) -MMD -o $@ -c $<
 	@$(eval INDEX:=$(shell echo $$(($(INDEX)+1))))
 	@$(eval PERCENT=$(shell echo $$((($(INDEX))*100/$(NUMBER_FILES)))))
-	@printf "\r⸨`printf '▓%.s' {0..$(PROGRESS)}`%*s" $(NOT_DONE) "⸩"
+	@printf "\r⸨`printf '▓%.s' {0..$(PROGRESS)}``printf '░%.s' {0..$(NOT_DONE)}`⸩"
 	@printf " | %3d%% - [$(INDEX)/$(NUMBER_FILES)]" $(PERCENT)
 
 clean:

@@ -12,27 +12,23 @@
 
 #------Name of the project------#
 
-NAME = libft_malloc_$HOSTTYPE.so
-
+LINK = libft_malloc.so
+#NAME = test
+NAME = libft_malloc_$(HOSTTYPE).so
 #------Assign HOSTTYPE------#
 
 ifeq ($(HOSTTYPE),)
-	HOSTTYPE := $(shell uname -m) $(shell uname -s)
+	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
 #------All sources------#
 
-MALLOC = main.c			\
+MALLOC =	malloc.c	\
+			search_in_pool.c	\
+			handle_pool.c
+#			main.c		\
 
-FILES_TO_TEST = check_placement.c
-
-TESTS = $(addprefix test_, $(FILES_TO_TEST))
-
-#SRCS += $(addprefix $(SRCS_PATH)/, $(FILLER))
-OBJ       += $(addprefix ./$(OBJ_PATH)/, $(MALLOC:.c=.o))
-OBJP      += $(addprefix ./$(OBJ_PATH)/, $(SRCS_PATH))
-TESTS_OBJ  = $(addprefix ./$(TESTS_PATH)/, $(TESTS:.c=.o))
-OBJ_FILES_TO_TEST = $(addprefix ./$(OBJ_PATH)/, $(FILES_TO_TEST:.c=.o))
+OBJ += $(addprefix ./$(OBJ_PATH)/, $(MALLOC:.c=.o))
 
 #------Includes------#
 
@@ -40,14 +36,14 @@ INCLUDES = ./includes/
 INC += -I $(INCLUDES)
 INC += -I $(LIB_PATH)/$(INCLUDES)
 LIB = $(LIB_PATH)/libft.a
-HEAD = $(INCLUDES)/filler.h
+
+HEAD = $(INCLUDES)/lib_alloc.h
 
 #------Path------#
 
 SRCS_PATH = srcs
 OBJ_PATH  = obj
 LIB_PATH  = libft
-TESTS_PATH = tests
 
 #------Main rules------#
 
@@ -56,16 +52,14 @@ all: $(OBJ_PATH) makelib $(NAME)
 $(NAME): $(OBJ)
 	@printf "\33[2KObjects created $(BOLD_GREEN)✓$(EOC)\n"
 	@printf "Start making $(NAME)... "
-	@$(CC) $(C_FLAGS) $(FLAGS) $(INC) -shared -o $@ $^ $(LIB)
-	@ln -s libft_malloc.so $(NAME)
+#	@$(CC) $(C_FLAGS) $(FLAGS) $(INC) -o $@ $^ $(LIB)
+	@$(CC) $(C_FLAGS) $(FLAGS) $(INC) -Llibft -lft -shared -o $@ $^ $(LIB)
+	@ln -s $(NAME) $(LINK)
 	@printf "$(BOLD_GREEN)$(NAME)$(EOC) created $(BOLD_GREEN)✓$(EOC)\n"
 
 $(OBJ_PATH):
-	@printf "Start creating obj folder... "
 	@mkdir -p $(OBJ_PATH)
-	@printf "$(OBJ_PATH) created  "
-	@mkdir -p $(OBJP)
-	@printf "$(OBJP) created\n"
+	@printf "$(OBJ_PATH) created\n"
 
 $(OBJ_PATH)/%.o: $(SRCS_PATH)/%.c $(HEAD)
 	@$(CC) $(FLAGS) $(C_FLAGS) $(INC) -o $@ -c $<
@@ -83,8 +77,8 @@ cleanlib:
 	@make clean -C $(LIB_PATH)
 
 fclean: fcleanlib clean
-	@rm -Rf $(NAME)
-	@echo "$(BOLD_GREEN)$(NAME)$(EOC) fclean $(BOLD_GREEN)✓$(EOC)"
+	@rm -Rf $(NAME) $(LINK)
+	@echo "$(BOLD_GREEN)$(NAME) $(LINK)$(EOC) fclean $(BOLD_GREEN)✓$(EOC)"
 
 fcleanlib:
 	@make fclean -C $(LIB_PATH)
