@@ -23,10 +23,14 @@ endif
 
 #------All sources------#
 
-MALLOC =	malloc.c	\
-			search_in_pool.c	\
-			handle_pool.c
-#			main.c		\
+MALLOC =	malloc.c		\
+			search_in_pool.c\
+			free.c			\
+			handle_addr.c	\
+			show_alloc_mem.c\
+			handle_pool.c	\
+			defragment.c
+#		main.c		\
 
 OBJ += $(addprefix ./$(OBJ_PATH)/, $(MALLOC:.c=.o))
 
@@ -54,6 +58,11 @@ $(NAME): $(OBJ)
 	@printf "Start making $(NAME)... "
 #	@$(CC) $(C_FLAGS) $(FLAGS) $(INC) -o $@ $^ $(LIB)
 	@$(CC) $(C_FLAGS) $(FLAGS) $(INC) -Llibft -lft -shared -o $@ $^ $(LIB)
+	@if [ -e $(LINK) ]; \
+	then \
+		rm -Rf $(LINK); \
+		echo "$(BOLD_GREEN)$(LINK) deleted ✓$(EOC)"; \
+	fi;
 	@ln -s $(NAME) $(LINK)
 	@printf "$(BOLD_GREEN)$(NAME)$(EOC) created $(BOLD_GREEN)✓$(EOC)\n"
 

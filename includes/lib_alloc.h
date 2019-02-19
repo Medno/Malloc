@@ -5,42 +5,47 @@
 #include <sys/mman.h>
 
 #define NB_ALLOCATION 100
+#define TINY 1024
+#define SMALL 4096
 
-#define TINY 4 * NB_ALLOCATION
-#define SMALL 256 * NB_ALLOCATION
-
-enum			e_alloc
+typedef enum		e_alloc
 {
 	TINY_TYPE,
 	SMALL_TYPE,
 	LARGE_TYPE
-};
+}					t_alloc;
 
-typedef struct s_block	t_block;
-typedef enum e_alloc	t_alloc;
-
-struct	s_block
+typedef struct		s_block
 {
-	size_t	size;
-	t_block	*next;
-	t_block	*prev;
-};
+	size_t			size;
+	struct s_block	*next;
+	struct s_block	*prev;
+}					t_block;
 
-typedef struct	s_pool
+typedef struct		s_pool
 {
 	t_block	*alloc;
 	t_block	*freed;
-}				t_pool;
+}					t_pool;
 
-t_pool			g_pool[3];
+t_pool				g_pool[3];
 
-void			*alloc_mem(void *start_addr, size_t size);
+t_block				*alloc_mem(void *start_addr, size_t size);
 
-void			*malloc(size_t size);
-void	*extend_heap(size_t size, t_alloc type);
-void	*handle_pool(size_t size, t_alloc type);
-size_t	align_size(size_t size, int round);
-t_block	*search_available_chunk(size_t size, t_alloc type);
-t_block	*find_last_block(t_block *pool);
+void				free(void *ptr);
+void				*malloc(size_t size);
+void				show_alloc_mem();
 
+void				*calloc(size_t count, size_t size);
+void				defragment_around(t_block *new_freed);
+
+void				*extend_heap(size_t size, t_alloc type);
+void				*handle_pool(size_t size, t_alloc type);
+size_t				align_size(size_t size, int round);
+t_block				*search_available_chunk(size_t size, t_alloc type);
+t_block				*find_last_block(t_block *pool, t_block *cmp);
+t_block				*find_block_of_ptr(void *ptr, t_alloc *type);
+
+void				handle_addr(size_t value, int base);
+void	print_all_pools(void);
 #endif
