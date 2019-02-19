@@ -41,6 +41,8 @@ void	*extend_heap(size_t size, t_alloc type, t_block *last)
 	new_block->prev = last;
 	if (last)
 		last->next = new_block;
+	else
+		last = new_block;
 	new_block->free = 0;
 	return (new_block);
 }
