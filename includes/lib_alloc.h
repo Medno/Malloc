@@ -8,6 +8,8 @@
 #define TINY 1024
 #define SMALL 4096
 
+typedef uint8_t		t_free;
+
 typedef enum		e_alloc
 {
 	TINY_TYPE,
@@ -18,17 +20,18 @@ typedef enum		e_alloc
 typedef struct		s_block
 {
 	size_t			size;
+	t_free			free;
 	struct s_block	*next;
 	struct s_block	*prev;
 }					t_block;
-
+/*
 typedef struct		s_pool
 {
 	t_block	*alloc;
 	t_block	*freed;
 }					t_pool;
-
-t_pool				g_pool[3];
+*/
+t_block				*g_pool[3];
 
 t_block				*alloc_mem(void *start_addr, size_t size);
 

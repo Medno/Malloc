@@ -24,7 +24,7 @@ void	create_new_pool(t_alloc type, t_block *new, size_t total_size)
 
 }
 
-void	*extend_heap(size_t size, t_alloc type)
+void	*extend_heap(size_t size, t_alloc type, t_block *last)
 {
 	t_block	*new_block;
 	t_block	*last;
@@ -32,7 +32,6 @@ void	*extend_heap(size_t size, t_alloc type)
 	size_t	size_to_allocate;
 	
 	size_to_allocate = compute_size_to_allocate(size, type);
-	last = find_last_block(g_pool[type].alloc, NULL);
 	aligned_pages = align_size(size_to_allocate, getpagesize());
 	new_block = (t_block *)alloc_mem(last, aligned_pages);
 	if (!new_block)
@@ -42,8 +41,7 @@ void	*extend_heap(size_t size, t_alloc type)
 	new_block->prev = last;
 	if (last)
 		last->next = new_block;
-	else
-		create_new_pool(type, new_block, aligned_pages);
+	new_block->free = 0;
 	return (new_block);
 }
 
@@ -53,7 +51,11 @@ t_block	*split_block(size_t size, t_block *to_split)
 
 	new = (t_block *)((char *)to_split + sizeof(t_block) + size);
 	new->size = to_split->size - size - sizeof(t_block);
+	new->next = to_split->next;
+	new->prev = to_split;
+	new->free = 1;
 	to_split->size = size;
+	to_split->next = new;
 	return (new);
 }
 
@@ -88,9 +90,10 @@ void	*handle_available_block(size_t size, t_alloc type, t_block *freed)
 void	*handle_pool(size_t size, t_alloc type)
 {
 	t_block	*block;
+	t_block	*last;
 
-	block = search_available_chunk(size, type);
+	block = search_available_chunk(size, type, last);
 	if (block)
 		return (handle_available_block(size, type, block));
-	return (extend_heap(size, type));
+	return (extend_heap(size, type, last));
 }

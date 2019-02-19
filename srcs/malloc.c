@@ -105,9 +105,6 @@ void	*malloc(size_t size)
 
 	aligned_size = align_size(size, 4);
 	type = find_type_pool(aligned_size);
-	if (type == LARGE_TYPE)
-		result = extend_heap(aligned_size, type);
-	else
-		result = handle_pool(aligned_size, type);
+	result = handle_pool(aligned_size, type);
 	return ((void *)((char *)result + sizeof(t_block)));
 }

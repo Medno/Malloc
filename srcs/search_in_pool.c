@@ -1,11 +1,15 @@
 #include "lib_alloc.h"
 
-t_block	*search_available_chunk(size_t size, t_alloc type)
+t_block	*search_available_chunk(size_t size, t_alloc type, t_block *last)
 {
 	t_block	*tmp;
-	tmp = g_pool[type].freed;
-	while (tmp && tmp->size < size + sizeof(t_block))
+
+	tmp = g_pool[type];
+	while (tmp && !(tmp->free && tmp->size >= size + sizeof(t_block)))
+	{
+		last = tmp;
 		tmp = tmp->next;
+	}
 	return (tmp);
 }
 
