@@ -1,6 +1,27 @@
 #include "lib_alloc.h"
 
-t_block	*search_available_chunk(size_t size, t_alloc type, t_block *last)
+t_block	*find_block_of_ptr(void *ptr, t_alloc *type)
+{
+	t_block	*result;
+
+	result = NULL;
+	while (*type <= LARGE_TYPE && !result)
+	{
+		result = find_last_block(g_pool[*type],
+				(t_block *)(ptr - sizeof(t_block)));
+		if (!result || (t_block *)(ptr - sizeof(t_block)) != result)
+		{
+			result = NULL;
+			(*type)++;
+		}
+	}
+	if (result && !result->next &&
+			(t_block *)(ptr - sizeof(t_block)) != result)
+		return (NULL);
+	return (result);
+}
+
+t_block	*find_available_chunk(size_t size, t_alloc type, t_block *last)
 {
 	t_block	*tmp;
 

@@ -39,10 +39,13 @@ void	print_all_pools(void)
 		ft_putstr("Pool number : |");
 		ft_putnbr(i);
 		ft_putendl("|");
-		tmp = g_pool[i].alloc;
+		tmp = g_pool[i];
 		while (tmp)
 		{
-			ft_putstr("Block allocated:\n");
+			if (!tmp->free)
+				ft_putstr("Block allocated:\n");
+			else
+				ft_putstr("Block freed:\n");
 			ft_putstr("Size :		|");
 			ft_putnbr(tmp->size);
 			ft_putendl("|");
@@ -59,25 +62,6 @@ void	print_all_pools(void)
 			handle_addr((size_t)tmp + sizeof(t_block), 16);
 			ft_putstr("| -> |");
 			handle_addr((size_t)tmp + tmp->size, 16);
-			ft_putendl("|");
-			tmp = tmp->next;
-			//Print the interval
-		}
-		tmp = g_pool[i].freed;
-		while (tmp)
-		{
-			ft_putstr("Block freed:\n");
-			ft_putstr("Size :		|");
-			ft_putnbr(tmp->size);
-			ft_putendl("|");
-			ft_putstr("Address :	|0x");
-			handle_addr((size_t)tmp, 16);
-			ft_putendl("|");
-			ft_putstr("Prev :		|0x");
-			handle_addr((size_t)tmp->prev, 16);
-			ft_putendl("|");
-			ft_putstr("Next :		|0x");
-			handle_addr((size_t)tmp->next, 16);
 			ft_putendl("|");
 			tmp = tmp->next;
 		}

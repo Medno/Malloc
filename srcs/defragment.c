@@ -19,11 +19,11 @@ void	defragment_around(t_block *new_freed)
 	t_block	*tmp;
 
 	tmp = new_freed->prev;
-	if (tmp)
+	if (tmp && tmp->free)
 		defragment_chunk(tmp, new_freed);
 	else
 		tmp = new_freed;
-	if (tmp && tmp->next)
+	if (tmp && tmp->next && tmp->next->free)
 	{
 		new_freed = tmp->next;
 		defragment_chunk(tmp, new_freed);

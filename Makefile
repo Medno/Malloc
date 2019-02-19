@@ -26,6 +26,7 @@ endif
 MALLOC =	malloc.c		\
 			search_in_pool.c\
 			free.c			\
+			realloc.c		\
 			handle_addr.c	\
 			show_alloc_mem.c\
 			handle_pool.c	\
