@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 11:33:36 by pchadeni          #+#    #+#             */
-/*   Updated: 2018/01/23 13:34:17 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/02/20 10:43:12 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	tmp_dst = dst;
 	tmp_src = src;
 	i = 0;
-	while (n > i)
+	while (i < n)
 	{
 		tmp_dst[i] = tmp_src[i];
 		i++;

@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 10:59:23 by pchadeni          #+#    #+#             */
-/*   Updated: 2018/01/23 13:33:59 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/02/20 10:43:47 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,8 @@ unsigned int		ft_sqrt(int nb)
 	if (nb == 1)
 		return (1);
 	end = nb;
-//	while (++i && i * i <= nb && i * i)
 	while (i <= end)
 	{
-//		ft_dprintf(2, "i: %d\n", i);
 		mid = (i + end) / 2;
 		if (mid * mid == nb)
 			return mid;
