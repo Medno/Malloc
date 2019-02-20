@@ -1,6 +1,6 @@
 #include "lib_alloc.h"
 
-void	free(void *ptr)
+void	free_n(void *ptr)
 {
 	t_block	*found;
 	t_alloc	type;
@@ -21,4 +21,9 @@ void	free(void *ptr)
 	}
 	defragment_around(found);
 	return ;
+}
+
+void	free(void *ptr)
+{
+	free_n(ptr);
 }

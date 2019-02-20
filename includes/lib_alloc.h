@@ -45,6 +45,10 @@ t_block				*find_available_chunk(size_t s, t_alloc t, t_block *l);
 t_block				*find_last_block(t_block *pool, t_block *cmp);
 t_block				*find_block_of_ptr(void *ptr, t_alloc *type);
 
+
+void				free_n(void *ptr);
+void				*malloc_n(size_t size);
+
 void				handle_addr(size_t value, int base);
 void	print_all_pools(void);
 #endif

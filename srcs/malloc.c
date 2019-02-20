@@ -81,7 +81,7 @@ void	*calloc(size_t count, size_t size)
 	return (result);
 }
 
-void	*malloc(size_t size)
+void	*malloc_n(size_t size)
 {
 	size_t	aligned_size;
 	void	*result;
@@ -91,4 +91,13 @@ void	*malloc(size_t size)
 	type = find_type_pool(aligned_size);
 	result = handle_pool(aligned_size, type);
 	return ((void *)((char *)result + sizeof(t_block)));
+}
+
+void	*malloc(size_t size)
+{
+	void	*res;
+
+	res = malloc_n(size);
+
+	return (res);
 }
