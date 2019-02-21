@@ -27,20 +27,13 @@ t_block	*find_available_chunk(size_t size, t_alloc type, t_block *last)
 {
 	t_block	*tmp;
 
-ft_putendl("a");
 	tmp = g_pool[type];
-ft_putendl("b");
-handle_addr((size_t)tmp, 16);
-ft_putendl(" <-- pool addr");
-//print_all_pools();
 
 	while (tmp && !(tmp->free && tmp->size >= size + sizeof(t_block)))
 	{
-	ft_putendl("d");
 		last = tmp;
 		tmp = tmp->next;
 	}
-ft_putendl("c");
 	return (tmp);
 }
 

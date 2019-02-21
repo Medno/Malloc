@@ -4,6 +4,7 @@ t_block	*alloc_mem(void *start_addr, size_t size)
 {
 	t_block	*tmp;
 
+(void)start_addr;
 	if ((tmp = mmap(NULL, size, PROT_READ | PROT_WRITE,
 		MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
 		return (NULL);
@@ -63,9 +64,12 @@ void	print_all_pools(void)
 			ft_putendl("|");
 			ft_putstr("From -> to :		|0x");
 			handle_addr((size_t)tmp + sizeof(t_block), 16);
-			ft_putstr("| -> |");
-			handle_addr((size_t)tmp + tmp->size, 16);
+			ft_putstr("| -> |0x");
+			handle_addr((size_t)tmp + tmp->size + sizeof(t_block), 16);
 			ft_putendl("|");
+			ft_putstr("to :		|");
+			handle_addr((size_t)tmp + sizeof(t_block), 10);
+			ft_putstr("| -> |0x");
 			tmp = tmp->next;
 		}
 		i++;
@@ -78,9 +82,12 @@ void	*calloc(size_t count, size_t size)
 {
 	void	*result;
 
+//ft_putendl("Start of calloc");
 	result = malloc(count * size);
+//ft_putendl("CALLOC");
 	if (result)
 		ft_bzero(result, count * size);
+//ft_putendl("End of calloc");
 	return (result);
 }
 
@@ -90,29 +97,37 @@ void	*malloc_n(size_t size)
 	void	*result;
 	t_alloc	type;
 
-ft_putnbr(size);
-ft_putendl("Taille input");
+//ft_putnbr(size);
+//ft_putendl("Taille input");
 	aligned_size = align_size(size, 4);
-ft_putnbr(aligned_size);
-ft_putendl("Taille aligned");
+//ft_putnbr(aligned_size);
+//ft_putendl("Taille aligned");
 	type = find_type_pool(aligned_size);
 	result = handle_pool(aligned_size, type);
-	return ((void *)((char *)result + sizeof(t_block)));
+	return ((void *)result + sizeof(t_block));
 }
 
 void	*malloc(size_t size)
 {
 	void	*res;
 
-ft_putendl("Before Malloc");
-	res = malloc_n(size);
-handle_addr((size_t)g_pool[0], 16);
-ft_putendl(" <-- Pool 0");
-handle_addr((size_t)g_pool[1], 16);
-ft_putendl(" <-- Pool 1");
-handle_addr((size_t)g_pool[2], 16);
-ft_putendl(" <-- Pool 2");
-ft_putendl("After Malloc");
+//ft_putendl("Before Malloc");
 //print_all_pools();
+	res = malloc_n(size);
+//handle_addr((size_t)g_pool[0], 16);
+//ft_putendl(" <-- Pool 0");
+//handle_addr((size_t)g_pool[1], 16);
+//ft_putendl(" <-- Pool 1");
+//handle_addr((size_t)g_pool[2], 16);
+//ft_putendl(" <-- Pool 2");
+//print_all_pools();
+//handle_addr((size_t)res, 16);
+//ft_putendl(" <-- Result");
+
+//handle_addr((size_t)res, 10);
+//ft_putendl(" <-- Result");
+//handle_addr(getpagesize(), 10);
+//ft_putendl(" <-- Pagesize");
+//ft_putendl("After Malloc");
 	return (res);
 }

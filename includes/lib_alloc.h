@@ -20,9 +20,10 @@ typedef enum		e_alloc
 typedef struct		s_block
 {
 	size_t			size;
-	t_free			free;
 	struct s_block	*next;
 	struct s_block	*prev;
+	t_free			free;
+	char			padding[7];
 }					t_block;
 
 t_block				*g_pool[3];
@@ -44,6 +45,7 @@ t_block				*split_block(size_t size, t_block *to_split);
 t_block				*find_available_chunk(size_t s, t_alloc t, t_block *l);
 t_block				*find_last_block(t_block *pool, t_block *cmp);
 t_block				*find_block_of_ptr(void *ptr, t_alloc *type);
+t_alloc				find_type_pool(size_t size);
 
 
 void				free_n(void *ptr);

@@ -6,7 +6,7 @@
 #    By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/08 14:57:58 by pchadeni          #+#    #+#              #
-#    Updated: 2019/01/16 17:54:38 by pchadeni         ###   ########.fr        #
+#    Updated: 2019/02/21 14:48:57 by pchadeni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ $(NAME): $(OBJ)
 	@printf "\33[2KObjects created $(BOLD_GREEN)✓$(EOC)\n"
 	@printf "Start making $(NAME)... "
 #	@$(CC) $(C_FLAGS) $(FLAGS) $(INC) -o $@ $^ $(LIB)
-	@$(CC) $(C_FLAGS) $(FLAGS) $(INC) -Llibft -lft -shared -o $@ $^ $(LIB)
+	@$(CC) $(C_FLAGS) $(FLAGS) $(INC) -Wpadded -Llibft -lft -shared -o $@ $^ $(LIB)
 	@if [ -e $(LINK) ]; \
 	then \
 		rm -Rf $(LINK); \
@@ -73,7 +73,7 @@ $(OBJ_PATH):
 
 $(OBJ_PATH)/%.o: $(SRCS_PATH)/%.c $(HEAD)
 	@$(CC) $(FLAGS) $(C_FLAGS) $(INC) -o $@ -c $<
-	@printf " $(COL_GREEN)[OK]$(EOC)    $(COL_YELLOW)Compiling:$(EOC) $<\r"
+	@printf " $(COL_GREEN)[OK]$(EOC) -Wadded $(COL_YELLOW)Compiling:$(EOC) $<\r"
 
 makelib:
 	@make -C $(LIB_PATH) NOERR=$(NOERR) DEV=$(DEV) SAN=$(SAN)
