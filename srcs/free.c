@@ -21,7 +21,7 @@ void	free_n(void *ptr)
 		found->next = NULL;
 		found->prev = NULL;
 
-		if ((munmap(found, align_size(found->size + sizeof(t_block), 4))) == -1)
+		if ((munmap(found, align_size(found->size + sizeof(t_block), 16))) == -1)
 			ft_putendl_fd("Error unmapping memory", 2);
 		return ;
 	}
@@ -31,5 +31,9 @@ void	free_n(void *ptr)
 
 void	free(void *ptr)
 {
+ft_putendl("Before free...");
+	pthread_mutex_lock(&g_mutex);
 	free_n(ptr);
+	pthread_mutex_unlock(&g_mutex);
+ft_putendl("After free");
 }

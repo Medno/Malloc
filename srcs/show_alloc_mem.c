@@ -1,5 +1,63 @@
 #include "lib_alloc.h"
 
+void	print_all_pools(void)
+{
+	t_block	*tmp;
+	int		i;
+
+	i = 0;
+	ft_putendl("====================================================================");
+	ft_putendl("====================================================================");
+	while (i < 3)
+	{
+		ft_putstr("Pool number : |");
+		ft_putnbr(i);
+		ft_putstr("| ");
+		tmp = g_pool[i];
+	handle_addr((size_t)tmp, 16);
+	ft_putendl(" Addr of pool");
+		while (tmp)
+		{
+		ft_putendl("Test4");
+			if (!tmp->free)
+				ft_putstr("Block allocated:\n");
+			else
+				ft_putstr("Block freed:\n");
+			ft_putstr("Size :		|");
+			ft_putnbr(tmp->size);
+			ft_putendl("|");
+			ft_putstr("Address :	|0x");
+			handle_addr((size_t)tmp, 16);
+			ft_putendl("|");
+			ft_putstr("Prev :		|0x");
+			handle_addr((size_t)tmp->prev, 16);
+			ft_putendl("|");
+			ft_putstr("Next :		|0x");
+			handle_addr((size_t)tmp->next, 16);
+			ft_putendl("|");
+			ft_putstr("From -> to :		|0x");
+			handle_addr((size_t)tmp + sizeof(t_block), 16);
+			ft_putstr("| -> |0x");
+			handle_addr((size_t)tmp + tmp->size + sizeof(t_block), 16);
+			ft_putendl("|");
+			ft_putstr("to :		|");
+			handle_addr((size_t)tmp + sizeof(t_block), 10);
+			ft_putendl("");
+			tmp = tmp->next;
+		}
+		i++;
+	}
+handle_addr(sizeof(size_t), 10);
+ft_putendl("");
+handle_addr(sizeof(t_block *), 10);
+ft_putendl("");
+handle_addr(sizeof(t_free), 10);
+ft_putendl("");
+	ft_putendl("====================================================================");
+	ft_putendl("====================================================================");
+}
+
+
 int		print_pool(t_block *pool)
 {
 	size_t	res;

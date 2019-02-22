@@ -2,13 +2,17 @@
 #define LIB_ALLOC_H
 
 #include "libft.h"
-#include <sys/mman.h>
+# include <sys/mman.h>
+# include <pthread.h>
+
 
 #define NB_ALLOCATION 100
 #define TINY 1024
 #define SMALL 4096
 
 typedef uint8_t		t_free;
+pthread_mutex_t		g_mutex;
+
 
 typedef enum		e_alloc
 {
@@ -19,9 +23,9 @@ typedef enum		e_alloc
 
 typedef struct		s_block
 {
-	size_t			size;
 	struct s_block	*next;
 	struct s_block	*prev;
+	size_t			size;
 	t_free			free;
 	char			padding[7];
 }					t_block;

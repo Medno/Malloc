@@ -8,9 +8,6 @@ void	defragment_chunk(t_block *old, t_block *new)
 		old->next = new->next;
 		if (new->next)
 			new->next->prev = old;
-		new->size = 0;
-		new->prev = NULL;
-		new->next = NULL;
 	}
 }
 

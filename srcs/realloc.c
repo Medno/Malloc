@@ -22,7 +22,7 @@ void	*handle_realloc_block(void *p, size_t size, t_block *block, t_alloc t)
 {
 	if (block->size >= size)
 	{
-		if (block->size - size >= sizeof(t_block) + 4)
+		if (block->size - size >= sizeof(t_block) + 16)
 			split_block(size, block);
 	}
 	else
@@ -56,7 +56,7 @@ void	*realloc_n(void *ptr, size_t size)
 	}
 	type = TINY_TYPE;
 	block = find_block_of_ptr(ptr, &type);
-	aligned_size = align_size(size, 4);
+	aligned_size = align_size(size, 16);
 	new_type = find_type_pool(aligned_size);
 	if (block && new_type == type)
 		return (handle_realloc_block(ptr, aligned_size, block, type));
@@ -68,7 +68,9 @@ void	*realloc_n(void *ptr, size_t size)
 void	*realloc(void *ptr, size_t size)
 {
 	void	*res;
-
+ 
+ 	pthread_mutex_lock(&g_mutex);
 	res = realloc_n(ptr, size);
+ 	pthread_mutex_unlock(&g_mutex);
 	return (res);
 }

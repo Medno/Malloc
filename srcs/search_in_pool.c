@@ -29,7 +29,7 @@ t_block	*find_available_chunk(size_t size, t_alloc type, t_block *last)
 
 	tmp = g_pool[type];
 
-	while (tmp && !(tmp->free && tmp->size >= size + sizeof(t_block)))
+	while (tmp && !(tmp->free && tmp->size >= size))
 	{
 		last = tmp;
 		tmp = tmp->next;

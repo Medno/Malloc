@@ -72,8 +72,8 @@ $(OBJ_PATH):
 	@printf "$(OBJ_PATH) created\n"
 
 $(OBJ_PATH)/%.o: $(SRCS_PATH)/%.c $(HEAD)
-	@$(CC) $(FLAGS) $(C_FLAGS) $(INC) -o $@ -c $<
-	@printf " $(COL_GREEN)[OK]$(EOC) -Wadded $(COL_YELLOW)Compiling:$(EOC) $<\r"
+	@$(CC) $(FLAGS) $(C_FLAGS) $(INC) -Wpadded -o $@ -c $<
+	@printf " $(COL_GREEN)[OK]$(EOC) $(COL_YELLOW)Compiling:$(EOC) $<\r"
 
 makelib:
 	@make -C $(LIB_PATH) NOERR=$(NOERR) DEV=$(DEV) SAN=$(SAN)

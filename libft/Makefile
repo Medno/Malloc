@@ -136,6 +136,7 @@ OBJ += $(addprefix ./$(OBJ_PATH)/, $(SRCS_PRINTF:.c=.o))
 all: $(OBJ_PATH) $(NAME)
 
 $(NAME): $(OBJ)
+	@$(eval PROGRESS:=$(shell echo $$(($(PROGRESS)+1))))
 	@printf "\r⸨`printf '▓%.s' {0..$(PROGRESS)}`⸩"
 	@printf " Objects created $(BOLD_GREEN)✓$(EOC)\n"
 	@printf "Start making $(NAME)...\n"
