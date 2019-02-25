@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/25 16:35:35 by pchadeni          #+#    #+#             */
+/*   Updated: 2019/02/25 16:39:29 by pchadeni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lib_alloc.h"
 
 void	free_n(void *ptr)
@@ -20,8 +32,8 @@ void	free_n(void *ptr)
 			found->prev->next = found->next;
 		found->next = NULL;
 		found->prev = NULL;
-
-		if ((munmap(found, align_size(found->size + sizeof(t_block), 16))) == -1)
+		if ((munmap(found, align_size(found->size + sizeof(t_block), 16)))
+				== -1)
 			ft_putendl_fd("Error unmapping memory", 2);
 		return ;
 	}
@@ -31,9 +43,7 @@ void	free_n(void *ptr)
 
 void	free(void *ptr)
 {
-ft_putendl("Before free...");
 	pthread_mutex_lock(&g_mutex);
 	free_n(ptr);
 	pthread_mutex_unlock(&g_mutex);
-ft_putendl("After free");
 }

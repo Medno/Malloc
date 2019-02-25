@@ -6,7 +6,7 @@
 #    By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/08 14:57:58 by pchadeni          #+#    #+#              #
-#    Updated: 2019/02/21 14:48:57 by pchadeni         ###   ########.fr        #
+#    Updated: 2019/02/25 16:37:35 by pchadeni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ endif
 #------All sources------#
 
 MALLOC =	malloc.c		\
-			search_in_pool.c\
+			find_in_pool.c	\
 			free.c			\
 			realloc.c		\
 			handle_addr.c	\

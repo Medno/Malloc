@@ -1,4 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   show_alloc_mem.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/25 16:39:52 by pchadeni          #+#    #+#             */
+/*   Updated: 2019/02/25 16:40:50 by pchadeni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lib_alloc.h"
+
+/*
+void	print_edited_p(t_block *tmp)
+{
+	if (!tmp)
+	{
+		ft_putendl("No ptr found");
+		return ;
+	}
+	if (!tmp->free)
+		ft_putstr("A:	");
+	else
+		ft_putstr("F	");
+	ft_putstr("Size :	|");
+	ft_putnbr(tmp->size);
+	ft_putstr("|	Address :	|0x");
+	handle_addr((size_t)tmp, 16);
+	ft_putstr("|	Prev :	|0x");
+	handle_addr((size_t)tmp->prev, 16);
+	ft_putstr("|	Next :	|0x");
+	handle_addr((size_t)tmp->next, 16);
+	ft_putstr("|	Block :	|0x");
+	handle_addr((size_t)tmp + sizeof(t_block), 16);
+	ft_putstr("| -> |0x");
+	handle_addr((size_t)tmp + tmp->size + sizeof(t_block), 16);
+	ft_putendl("|");
+
+}
 
 void	print_all_pools(void)
 {
@@ -6,57 +46,51 @@ void	print_all_pools(void)
 	int		i;
 
 	i = 0;
-	ft_putendl("====================================================================");
-	ft_putendl("====================================================================");
+	ft_putendl("=========================================================================================================================\n=========================================================================================================================");
 	while (i < 3)
 	{
 		ft_putstr("Pool number : |");
 		ft_putnbr(i);
 		ft_putstr("| ");
 		tmp = g_pool[i];
-	handle_addr((size_t)tmp, 16);
-	ft_putendl(" Addr of pool");
+		handle_addr((size_t)tmp, 16);
+		ft_putendl(" Addr of pool");
 		while (tmp)
 		{
-		ft_putendl("Test4");
 			if (!tmp->free)
-				ft_putstr("Block allocated:\n");
+				ft_putstr("A:	");
 			else
-				ft_putstr("Block freed:\n");
-			ft_putstr("Size :		|");
+				ft_putstr("F	");
+			ft_putstr("Size :	|");
 			ft_putnbr(tmp->size);
-			ft_putendl("|");
-			ft_putstr("Address :	|0x");
+			ft_putstr("|	Address :	|0x");
 			handle_addr((size_t)tmp, 16);
-			ft_putendl("|");
-			ft_putstr("Prev :		|0x");
+			ft_putstr("|	Prev :	|0x");
 			handle_addr((size_t)tmp->prev, 16);
-			ft_putendl("|");
-			ft_putstr("Next :		|0x");
+			ft_putstr("|	Next :	|0x");
 			handle_addr((size_t)tmp->next, 16);
-			ft_putendl("|");
-			ft_putstr("From -> to :		|0x");
+			ft_putstr("|	Block :	|0x");
 			handle_addr((size_t)tmp + sizeof(t_block), 16);
 			ft_putstr("| -> |0x");
 			handle_addr((size_t)tmp + tmp->size + sizeof(t_block), 16);
 			ft_putendl("|");
-			ft_putstr("to :		|");
-			handle_addr((size_t)tmp + sizeof(t_block), 10);
-			ft_putendl("");
+			//			ft_putstr("to :		|");
+			//			handle_addr((size_t)tmp + sizeof(t_block), 10);
+			//			ft_putendl("");
 			tmp = tmp->next;
 		}
 		i++;
 	}
-handle_addr(sizeof(size_t), 10);
-ft_putendl("");
-handle_addr(sizeof(t_block *), 10);
-ft_putendl("");
-handle_addr(sizeof(t_free), 10);
-ft_putendl("");
-	ft_putendl("====================================================================");
-	ft_putendl("====================================================================");
+	   handle_addr(sizeof(size_t), 10);
+	   ft_putendl("");
+	   handle_addr(sizeof(t_block *), 10);
+	   ft_putendl("");
+	   handle_addr(sizeof(t_free), 10);
+	   ft_putendl("");
+	ft_putendl("=========================================================================================================================\n=========================================================================================================================");
 }
 
+*/
 
 int		print_pool(t_block *pool)
 {
@@ -84,7 +118,7 @@ int		print_pool(t_block *pool)
 	return (res);
 }
 
-void	show_alloc_mem()
+void	show_alloc_mem(void)
 {
 	size_t	size;
 

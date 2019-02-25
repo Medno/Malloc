@@ -46,7 +46,7 @@ void				*handle_pool(size_t size, t_alloc type);
 size_t				align_size(size_t size, int round);
 t_block				*split_block(size_t size, t_block *to_split);
 
-t_block				*find_available_chunk(size_t s, t_alloc t, t_block *l);
+t_block				*find_available_chunk(size_t s, t_alloc t, t_block **l);
 t_block				*find_last_block(t_block *pool, t_block *cmp);
 t_block				*find_block_of_ptr(void *ptr, t_alloc *type);
 t_alloc				find_type_pool(size_t size);
@@ -57,4 +57,5 @@ void				*malloc_n(size_t size);
 
 void				handle_addr(size_t value, int base);
 void	print_all_pools(void);
+void	print_edited_p(t_block *tmp);
 #endif

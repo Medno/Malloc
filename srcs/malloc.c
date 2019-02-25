@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/25 16:36:30 by pchadeni          #+#    #+#             */
+/*   Updated: 2019/02/25 16:50:28 by pchadeni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lib_alloc.h"
 
 pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -10,13 +22,6 @@ t_block	*alloc_mem(void *start_addr, size_t size)
 		MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
 		return (NULL);
 	return (tmp);
-}
-
-size_t	align_size(size_t size, int round)
-{
-	if (!size)
-		return (round);
-	return ((((size - 1) / round) * round) + round);
 }
 
 t_alloc	find_type_pool(size_t size)
@@ -32,13 +37,11 @@ void	*calloc(size_t count, size_t size)
 {
 	void	*result;
 
-//ft_putendl("Start of calloc");
 	pthread_mutex_lock(&g_mutex);
 	result = malloc_n(count * size);
 	if (result)
 		ft_bzero(result, count * size);
 	pthread_mutex_unlock(&g_mutex);
-//ft_putendl("End of calloc");
 	return (result);
 }
 
@@ -58,15 +61,8 @@ void	*malloc(size_t size)
 {
 	void	*res;
 
-ft_putendl("Before Malloc");
 	pthread_mutex_lock(&g_mutex);
-	res = malloc_n(size); 
+	res = malloc_n(size);
 	pthread_mutex_unlock(&g_mutex);
-//handle_addr((size_t)res, 10);
-//ft_putendl(" <-- Result");
-print_all_pools();
-handle_addr(getpagesize(), 10);
-ft_putendl(" <-- Pagesize");
-//ft_putendl("After Malloc");
 	return (res);
 }

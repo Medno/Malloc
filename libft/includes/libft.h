@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 11:10:25 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/01/17 18:18:00 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/02/25 16:32:01 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int				ft_memcmp(const void *s1, const void *s2, size_t n);
 int				ft_nbchar(char *str, char c);
 int				ft_nbwords(char *str);
 int				ft_pow(int n, int pow);
-unsigned int				ft_sqrt(int nb);
+int				ft_sqrt(int nb);
 int				ft_strcmp(const char *s1, const char *s2);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 int				ft_strequ(char const *s1, char const *s2);
@@ -181,7 +181,7 @@ void			ft_puttab(char **tab);
 void			ft_tabdel(char **tab);
 void			ft_del_array(void **array);
 
-t_point		set_point(int x, int y);
-char      *ft_strdup_count(const char *s1, const char searched, int *count);
+t_point			set_point(int x, int y);
+char			*ft_strdup_count(const char *s1, const char searched, int *c);
 
 #endif

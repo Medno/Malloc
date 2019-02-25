@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_addr.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/25 16:34:27 by pchadeni          #+#    #+#             */
+/*   Updated: 2019/02/25 16:39:08 by pchadeni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lib_alloc.h"
 
 void	write_addr(char res[])
@@ -16,8 +28,9 @@ void	handle_addr(size_t value, int base)
 {
 	int		i;
 	char	res[65];
-	char	labase[] = "0123456789ABCDEF";
+	char	labase[16];
 
+	labase = ft_strcpy(labase, "0123456789ABCDEF");
 	if (value == 0)
 	{
 		ft_putchar('0');
