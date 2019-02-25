@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 15:25:14 by pchadeni          #+#    #+#             */
-/*   Updated: 2018/04/20 10:39:37 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/02/25 16:30:35 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ char	*ft_strdup_count(const char *s1, const char searched, int *count)
 		return (NULL);
 	while (i < ft_strlen((char *)s1))
 	{
-    if (s1[i] == searched)
-      *count = *count + 1;
+		if (s1[i] == searched)
+			*count = *count + 1;
 		tmp[i] = s1[i];
 		i++;
 	}

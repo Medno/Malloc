@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/23 10:59:23 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/02/20 10:43:47 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/02/25 16:33:04 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		ft_pow(int n, int pow)
 	return (n);
 }
 
-unsigned int		ft_sqrt(int nb)
+int		ft_sqrt(int nb)
 {
 	int	i;
 	int	res;
@@ -72,14 +72,14 @@ unsigned int		ft_sqrt(int nb)
 	{
 		mid = (i + end) / 2;
 		if (mid * mid == nb)
-			return mid;
+			return (mid);
 		if (mid * mid < nb)
 		{
 			i = mid + 1;
 			res = mid;
 		}
 		else
-			end = mid-1;
+			end = mid - 1;
 	}
 	return (res);
 }
