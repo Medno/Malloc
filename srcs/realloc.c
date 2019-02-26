@@ -62,7 +62,7 @@ void	*realloc_n(void *ptr, size_t size)
 	if (ptr && !size)
 	{
 		free_n(ptr);
-		return (malloc_n(TINY));
+		return (malloc_n(0));
 	}
 	type = TINY_TYPE;
 	block = find_block_of_ptr(ptr, &type);
@@ -82,5 +82,15 @@ void	*realloc(void *ptr, size_t size)
 	pthread_mutex_lock(&g_mutex);
 	res = realloc_n(ptr, size);
 	pthread_mutex_unlock(&g_mutex);
+	return (res);
+}
+
+void	*reallocf(void *ptr, size_t size)
+{
+	void	*res;
+
+	res = realloc(ptr, size);
+	if (!res && ptr)
+		free(ptr);
 	return (res);
 }
