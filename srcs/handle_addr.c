@@ -30,7 +30,7 @@ void	handle_addr(size_t value, int base)
 	char	res[65];
 	char	labase[16];
 
-	labase = ft_strcpy(labase, "0123456789ABCDEF");
+	ft_strcpy(labase, "0123456789ABCDEF");
 	if (value == 0)
 	{
 		ft_putchar('0');
