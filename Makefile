@@ -30,6 +30,7 @@ MALLOC =	malloc.c		\
 			handle_addr.c	\
 			show_alloc_mem.c\
 			handle_pool.c	\
+			bonus.c			\
 			defragment.c
 #		main.c		\
 

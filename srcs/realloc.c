@@ -84,13 +84,3 @@ void	*realloc(void *ptr, size_t size)
 	pthread_mutex_unlock(&g_mutex);
 	return (res);
 }
-
-void	*reallocf(void *ptr, size_t size)
-{
-	void	*res;
-
-	res = realloc(ptr, size);
-	if (!res && ptr)
-		free(ptr);
-	return (res);
-}
