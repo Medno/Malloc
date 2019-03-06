@@ -45,7 +45,7 @@ size_t				malloc_good_size(size_t size);
 void				*reallocf(void *ptr, size_t size);
 
 t_block				*alloc_mem(void *start_addr, size_t size);
-void				*handle_pool(size_t size, t_alloc type);
+t_block				*handle_pool(size_t size, t_alloc type);
 size_t				align_size(size_t size, int round);
 t_block				*split_block(size_t size, t_block *to_split);
 

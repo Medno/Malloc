@@ -66,7 +66,7 @@ t_block	*split_block(size_t size, t_block *to_split)
 	return (new);
 }
 
-void	*handle_pool(size_t size, t_alloc type)
+t_block	*handle_pool(size_t size, t_alloc type)
 {
 	t_block	*block;
 	t_block	*last;

@@ -15,13 +15,15 @@
 void	*calloc(size_t count, size_t size)
 {
 	void	*result;
+	size_t	size_to_bzero;
 
 	pthread_mutex_lock(&g_mutex);
 ft_putendl("Before calloc");
 //print_all_pools();
 	result = malloc_n(count * size);
+	size_to_bzero = size == 0 ? 16 : size;
 	if (result)
-		ft_bzero(result, count * size);
+		ft_bzero(result, count * size_to_bzero);
 //print_all_pools();
 ft_putendl("After calloc");
 	pthread_mutex_unlock(&g_mutex);

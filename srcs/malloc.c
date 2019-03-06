@@ -36,7 +36,7 @@ t_alloc	find_type_pool(size_t size)
 void	*malloc_n(size_t size)
 {
 	size_t	aligned_size;
-	void	*result;
+	t_block	*result;
 	t_alloc	type;
 
 handle_addr(size, 10);

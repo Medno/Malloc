@@ -12,23 +12,21 @@
 
 #include "lib_alloc.h"
 
-void	*new_malloc(size_t size, void *ptr, t_alloc type, t_block *block)
+void	*new_malloc(size_t size, void *ptr, t_block *block)
 {
 	void	*new_ptr;
-	t_block	*new_block;
 	size_t	min_size;
 
 	new_ptr = malloc_n(size);
 	if (!new_ptr)
 		return (NULL);
-	new_block = find_block_of_ptr(new_ptr, &type);
 	min_size = block->size < size ? block->size : size;
 	new_ptr = ft_memcpy(new_ptr, ptr, min_size);
 	free_n(ptr);
 	return (new_ptr);
 }
 
-void	*handle_realloc_block(void *p, size_t size, t_block *block, t_alloc t)
+void	*handle_realloc_block(void *p, size_t size, t_block *block)
 {
 	if (block->size >= size)
 	{
@@ -45,9 +43,9 @@ void	*handle_realloc_block(void *p, size_t size, t_block *block, t_alloc t)
 				split_block(size, block);
 		}
 		else
-			return (new_malloc(size, p, t, block));
+			return (new_malloc(size, p, block));
 	}
-	return ((void *)((char *)block + sizeof(t_block)));
+	return ((void *)block + sizeof(t_block));
 }
 
 void	*realloc_n(void *ptr, size_t size)
@@ -69,9 +67,9 @@ void	*realloc_n(void *ptr, size_t size)
 	aligned_size = align_size(size, 16);
 	new_type = find_type_pool(aligned_size);
 	if (block && new_type == type && type != LARGE_TYPE)
-		return (handle_realloc_block(ptr, aligned_size, block, type));
+		return (handle_realloc_block(ptr, aligned_size, block));
 	else if (block)
-		return (new_malloc(size, ptr, new_type, block));
+		return (new_malloc(size, ptr, block));
 //	return (malloc_n(aligned_size));
 	return (ptr);
 }
