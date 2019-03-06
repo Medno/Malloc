@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:37:59 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/02/25 16:41:45 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/06 17:11:59 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ void	*realloc_n(void *ptr, size_t size)
 		return (handle_realloc_block(ptr, aligned_size, block, type));
 	else if (block)
 		return (new_malloc(size, ptr, new_type, block));
-	return (NULL);
+//	return (malloc_n(aligned_size));
+	return (ptr);
 }
 
 void	*realloc(void *ptr, size_t size)
@@ -80,7 +81,13 @@ void	*realloc(void *ptr, size_t size)
 	void	*res;
 
 	pthread_mutex_lock(&g_mutex);
+handle_addr((size_t)ptr, 16);
+ft_putendl(" <-- Before realloc");
+//print_all_pools();
 	res = realloc_n(ptr, size);
+//print_all_pools();
+handle_addr((size_t)ptr, 16);
+ft_putendl(" <-- after realloc");
 	pthread_mutex_unlock(&g_mutex);
 	return (res);
 }

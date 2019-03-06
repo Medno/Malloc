@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:35:35 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/02/25 16:39:29 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/06 16:38:18 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,21 @@ void	free_n(void *ptr)
 			ft_putendl_fd("Error unmapping memory", 2);
 		return ;
 	}
-	defragment_around(found);
+	if (found->prev && found->prev->free)
+		found = defragment_around(found->prev);
+	if (found)
+		defragment_around(found);
 	return ;
 }
 
 void	free(void *ptr)
 {
 	pthread_mutex_lock(&g_mutex);
+handle_addr((size_t)ptr, 16);
+ft_putendl(" <-- Before free");
+print_all_pools();
 	free_n(ptr);
+//print_all_pools();
+ft_putendl("After free");
 	pthread_mutex_unlock(&g_mutex);
 }

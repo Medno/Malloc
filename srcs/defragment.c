@@ -6,35 +6,20 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:34:17 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/02/25 16:34:22 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/06 11:34:14 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_alloc.h"
 
-void	defragment_chunk(t_block *old, t_block *new)
+t_block	*defragment_around(t_block *new_freed)
 {
-	if (old && (size_t)old + old->size + sizeof(t_block) == (size_t)new)
+	if (new_freed && new_freed->next && new_freed->next->free)
 	{
-		old->size += new->size + sizeof(t_block);
-		old->next = new->next;
-		if (new->next)
-			new->next->prev = old;
+		new_freed->size += new_freed->next->size + sizeof(t_block);
+		new_freed->next = new_freed->next->next;
+		if (new_freed->next)
+			new_freed->next->prev = new_freed;
 	}
-}
-
-void	defragment_around(t_block *new_freed)
-{
-	t_block	*tmp;
-
-	tmp = new_freed->prev;
-	if (tmp && tmp->free)
-		defragment_chunk(tmp, new_freed);
-	else
-		tmp = new_freed;
-	if (tmp && tmp->next && tmp->next->free)
-	{
-		new_freed = tmp->next;
-		defragment_chunk(tmp, new_freed);
-	}
+	return (new_freed);
 }
