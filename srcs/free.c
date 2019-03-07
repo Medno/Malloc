@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:35:35 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/06 16:38:18 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/07 09:51:21 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ void	free_n(void *ptr)
 void	free(void *ptr)
 {
 	pthread_mutex_lock(&g_mutex);
-handle_addr((size_t)ptr, 16);
-ft_putendl(" <-- Before free");
-print_all_pools();
+//handle_addr((size_t)ptr, 16);
+//ft_putendl(" <-- Before free");
+//print_all_pools();
 	free_n(ptr);
 //print_all_pools();
-ft_putendl("After free");
+//ft_putendl("After free");
 	pthread_mutex_unlock(&g_mutex);
 }

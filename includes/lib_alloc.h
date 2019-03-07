@@ -42,7 +42,7 @@ void				*calloc(size_t count, size_t size);
 t_block				*defragment_around(t_block *new_freed);
 size_t				malloc_size(void *ptr);
 size_t				malloc_good_size(size_t size);
-void				*reallocf(void *ptr, size_t size);
+//void				*reallocf(void *ptr, size_t size);
 
 t_block				*alloc_mem(void *start_addr, size_t size);
 t_block				*handle_pool(size_t size, t_alloc type);

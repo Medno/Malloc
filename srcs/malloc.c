@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:36:30 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/06 16:38:05 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/07 10:18:31 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ void	*malloc(size_t size)
 	void	*res;
 
 	pthread_mutex_lock(&g_mutex);
-ft_putendl("Before malloc");
-//print_all_pools();
+ft_putendl(" <-- Before malloc");
+print_all_pools();
 	res = malloc_n(size);
-//print_all_pools();
+print_all_pools();
 handle_addr((size_t)res, 16);
 ft_putendl(" <-- After malloc");
 	pthread_mutex_unlock(&g_mutex);

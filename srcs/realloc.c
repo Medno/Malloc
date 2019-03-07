@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:37:59 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/06 17:11:59 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/07 10:17:17 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	*handle_realloc_block(void *p, size_t size, t_block *block)
 	if (block->size >= size)
 	{
 		if (block->size - size >= sizeof(t_block))
-			split_block(size, block);
+			block->next = split_block(size, block);
 	}
 	else
 	{
@@ -40,7 +40,7 @@ void	*handle_realloc_block(void *p, size_t size, t_block *block)
 		{
 			defragment_around(block);
 			if (block->size - size >= sizeof(t_block))
-				split_block(size, block);
+				block->next = split_block(size, block);
 		}
 		else
 			return (new_malloc(size, p, block));
@@ -71,7 +71,7 @@ void	*realloc_n(void *ptr, size_t size)
 	else if (block)
 		return (new_malloc(size, ptr, block));
 //	return (malloc_n(aligned_size));
-	return (ptr);
+	return (NULL);
 }
 
 void	*realloc(void *ptr, size_t size)
@@ -81,9 +81,9 @@ void	*realloc(void *ptr, size_t size)
 	pthread_mutex_lock(&g_mutex);
 handle_addr((size_t)ptr, 16);
 ft_putendl(" <-- Before realloc");
-//print_all_pools();
+print_all_pools();
 	res = realloc_n(ptr, size);
-//print_all_pools();
+print_all_pools();
 handle_addr((size_t)ptr, 16);
 ft_putendl(" <-- after realloc");
 	pthread_mutex_unlock(&g_mutex);

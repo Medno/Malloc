@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:50:08 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/06 17:08:28 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/07 09:25:26 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	*extend_heap(size_t size, t_alloc type, t_block *last)
 
 	size_to_allocate = compute_size_to_allocate(size, type);
 	aligned_pages = align_size(size_to_allocate, getpagesize());
-	new_block = (t_block *)alloc_mem(last, aligned_pages);
+	new_block = (t_block *)alloc_mem(NULL, aligned_pages);
 	if (!new_block)
 		return (NULL);
 	new_block->size = aligned_pages - sizeof(t_block);
