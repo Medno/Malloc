@@ -6,93 +6,13 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:39:52 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/06 14:35:56 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/08 14:18:28 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_alloc.h"
 
-
-void	print_edited_p(t_block *tmp)
-{
-	if (!tmp)
-	{
-		ft_putendl("No ptr found");
-		return ;
-	}
-	if (!tmp->free)
-		ft_putstr("A:	");
-	else
-		ft_putstr("F	");
-	ft_putstr("Size :	|");
-	ft_putnbr(tmp->size);
-	ft_putstr("|	Address :	|0x");
-	handle_addr((size_t)tmp, 16);
-	ft_putstr("|	Prev :	|0x");
-	handle_addr((size_t)tmp->prev, 16);
-	ft_putstr("|	Next :	|0x");
-	handle_addr((size_t)tmp->next, 16);
-	ft_putstr("|	Block :	|0x");
-	handle_addr((size_t)tmp + sizeof(t_block), 16);
-	ft_putstr("| -> |0x");
-	handle_addr((size_t)tmp + tmp->size + sizeof(t_block), 16);
-	ft_putendl("|");
-
-}
-
-void	print_all_pools(void)
-{
-	t_block	*tmp;
-	int		i;
-
-	i = 0;
-	ft_putendl("=========================================================================================================================\n=========================================================================================================================");
-	while (i < 3)
-	{
-		ft_putstr("Pool number : |");
-		ft_putnbr(i);
-		ft_putstr("| ");
-		tmp = g_pool[i];
-		handle_addr((size_t)tmp, 16);
-		ft_putendl(" Addr of pool");
-		while (tmp)
-		{
-			if (!tmp->free)
-				ft_putstr("A:	");
-			else
-				ft_putstr("F	");
-			ft_putstr("Size :	|");
-			ft_putnbr(tmp->size);
-			ft_putstr("|	Address :	|0x");
-			handle_addr((size_t)tmp, 16);
-			ft_putstr("|	Prev :	|0x");
-			handle_addr((size_t)tmp->prev, 16);
-			ft_putstr("|	Next :	|0x");
-			handle_addr((size_t)tmp->next, 16);
-			ft_putstr("|	Block :	|0x");
-			handle_addr((size_t)tmp + sizeof(t_block), 16);
-			ft_putstr("| -> |0x");
-			handle_addr((size_t)tmp + tmp->size + sizeof(t_block), 16);
-			ft_putendl("|");
-			//			ft_putstr("to :		|");
-			//			handle_addr((size_t)tmp + sizeof(t_block), 10);
-			//			ft_putendl("");
-			tmp = tmp->next;
-		}
-		i++;
-	}
-	   handle_addr(sizeof(size_t), 10);
-	   ft_putendl("");
-	   handle_addr(sizeof(t_block *), 10);
-	   ft_putendl("");
-	   handle_addr(sizeof(t_free), 10);
-	   ft_putendl("");
-	ft_putendl("=========================================================================================================================\n=========================================================================================================================");
-}
-
-
-
-int		print_pool(t_block *pool)
+int		print_pool(t_block *pool, uint8_t free)
 {
 	size_t	res;
 	t_block	*tmp;
@@ -101,7 +21,7 @@ int		print_pool(t_block *pool)
 	res = 0;
 	while (tmp)
 	{
-		if (!tmp->free)
+		if (free || !tmp->free)
 		{
 			res += tmp->size;
 			ft_putstr("0x");
@@ -127,17 +47,42 @@ void	show_alloc_mem(void)
 	ft_putstr("0x");
 	handle_addr((size_t)g_pool[0], 16);
 	ft_putchar('\n');
-	size += print_pool(g_pool[0]);
+	size += print_pool(g_pool[0], 0);
 	ft_putstr("SMALL : ");
 	ft_putstr("0x");
 	handle_addr((size_t)g_pool[1], 16);
 	ft_putchar('\n');
-	size += print_pool(g_pool[1]);
+	size += print_pool(g_pool[1], 0);
 	ft_putstr("LARGE : ");
 	ft_putstr("0x");
 	handle_addr((size_t)g_pool[2], 16);
 	ft_putchar('\n');
-	size += print_pool(g_pool[2]);
+	size += print_pool(g_pool[2], 0);
+	ft_putstr("Total : ");
+	ft_putnbr(size);
+	ft_putendl(" octets");
+}
+
+void	show_alloc_mem_hex(void)
+{
+	size_t	size;
+
+	size = 0;
+	ft_putstr("TINY : ");
+	ft_putstr("0x");
+	handle_addr((size_t)g_pool[0], 16);
+	ft_putchar('\n');
+	size += print_pool(g_pool[0], 1);
+	ft_putstr("SMALL : ");
+	ft_putstr("0x");
+	handle_addr((size_t)g_pool[1], 16);
+	ft_putchar('\n');
+	size += print_pool(g_pool[1], 1);
+	ft_putstr("LARGE : ");
+	ft_putstr("0x");
+	handle_addr((size_t)g_pool[2], 16);
+	ft_putchar('\n');
+	size += print_pool(g_pool[2], 1);
 	ft_putstr("Total : ");
 	ft_putnbr(size);
 	ft_putendl(" octets");
