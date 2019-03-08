@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:35:35 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/07 09:51:21 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/08 14:23:01 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ void	free_n(void *ptr)
 			g_pool[type] = (found->next) ? found->next : NULL;
 		else
 			found->prev->next = found->next;
-		found->next = NULL;
-		found->prev = NULL;
-		if ((munmap(found, align_size(found->size + sizeof(t_block), 16)))
-				== -1)
+		if ((munmap(found, found->size + sizeof(t_block))) == -1)
 			ft_putendl_fd("Error unmapping memory", 2);
 		return ;
 	}
@@ -47,11 +44,6 @@ void	free_n(void *ptr)
 void	free(void *ptr)
 {
 	pthread_mutex_lock(&g_mutex);
-//handle_addr((size_t)ptr, 16);
-//ft_putendl(" <-- Before free");
-//print_all_pools();
 	free_n(ptr);
-//print_all_pools();
-//ft_putendl("After free");
 	pthread_mutex_unlock(&g_mutex);
 }

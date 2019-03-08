@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:36:30 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/07 09:48:04 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/08 14:15:45 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,10 @@ void	*calloc(size_t count, size_t size)
 	size_t	size_to_bzero;
 
 	pthread_mutex_lock(&g_mutex);
-//ft_putendl("Before calloc");
-//print_all_pools();
 	result = malloc_n(count * size);
 	size_to_bzero = size == 0 ? 16 : size;
 	if (result)
 		ft_bzero(result, count * size_to_bzero);
-//print_all_pools();
-//ft_putendl("After calloc");
 	pthread_mutex_unlock(&g_mutex);
 	return (result);
 }
@@ -34,11 +30,9 @@ void	*reallocf(void *ptr, size_t size)
 {
 	void	*res;
 
-//ft_putendl("Before reallocf");
 	res = realloc(ptr, size);
 	if (!res && ptr)
 		free(ptr);
-//ft_putendl("Before creallocf");
 	return (res);
 }
 

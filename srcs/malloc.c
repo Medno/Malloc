@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:36:30 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/07 10:18:31 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/08 14:15:08 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,10 @@ void	*malloc_n(size_t size)
 	t_block	*result;
 	t_alloc	type;
 
-handle_addr(size, 10);
-ft_putendl(" <-- to allocate");
 	aligned_size = align_size(size, 16);
-handle_addr(aligned_size, 10);
-ft_putendl(" <-- to allocate");
 	type = find_type_pool(aligned_size);
 	result = handle_pool(aligned_size, type);
-	return ((void *)result + sizeof(t_block));
+	return ((void *)((char *)result + sizeof(t_block)));
 }
 
 void	*malloc(size_t size)
@@ -54,12 +50,7 @@ void	*malloc(size_t size)
 	void	*res;
 
 	pthread_mutex_lock(&g_mutex);
-ft_putendl(" <-- Before malloc");
-print_all_pools();
 	res = malloc_n(size);
-print_all_pools();
-handle_addr((size_t)res, 16);
-ft_putendl(" <-- After malloc");
 	pthread_mutex_unlock(&g_mutex);
 	return (res);
 }
