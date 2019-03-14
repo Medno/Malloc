@@ -15,25 +15,27 @@
 void	free_n(void *ptr)
 {
 	t_block	*found;
+	t_bucket	*bucket;
 	t_alloc	type;
 
 	type = TINY_TYPE;
-	found = find_block_of_ptr(ptr, &type);
+	found = find_block_of_ptr(ptr, &type, &bucket);
+	handle_addr((size_t)found, 16);
+	ft_putendl(" <-- ptr found");
+// print_all_pools();
 	if (!found)
 		return ;
 	found->free = 1;
 	if (type == LARGE_TYPE)
 	{
-		if (found->next)
-			found->next->prev = found->prev;
-		if (!found->prev)
-			g_pool[type] = (found->next) ? found->next : NULL;
+		if (g_pool[type] == bucket)
+			g_pool[type] = (bucket->next) ? bucket->next : NULL;
 		else
-			found->prev->next = found->next;
-		found->next = NULL;
-		found->prev = NULL;
-		if ((munmap(found, align_size(found->size + sizeof(t_block), 16)))
-				== -1)
+			bucket->prev->next = bucket->next;
+		bucket->next = NULL;
+		bucket->prev = NULL;
+		if ((munmap(bucket,
+			align_size(found->size + sizeof(t_block) + sizeof(t_bucket), 32))) == -1)
 			ft_putendl_fd("Error unmapping memory", 2);
 		return ;
 	}
@@ -51,7 +53,7 @@ handle_addr((size_t)ptr, 16);
 ft_putendl(" <-- Before free");
 print_all_pools();
 	free_n(ptr);
-//print_all_pools();
+print_all_pools();
 ft_putendl("After free");
 	pthread_mutex_unlock(&g_mutex);
 }

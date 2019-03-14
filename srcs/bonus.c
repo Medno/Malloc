@@ -21,7 +21,7 @@ void	*calloc(size_t count, size_t size)
 ft_putendl("Before calloc");
 //print_all_pools();
 	result = malloc_n(count * size);
-	size_to_bzero = size == 0 ? 16 : size;
+	size_to_bzero = size == 0 ? 32 : size;
 	if (result)
 		ft_bzero(result, count * size_to_bzero);
 //print_all_pools();
@@ -38,7 +38,7 @@ ft_putendl("Before reallocf");
 	res = realloc(ptr, size);
 	if (!res && ptr)
 		free(ptr);
-ft_putendl("Before creallocf");
+ft_putendl("After reallocf");
 	return (res);
 }
 
@@ -47,7 +47,7 @@ size_t	malloc_size(void *ptr)
 	t_alloc	type;
 	t_block	*tmp;
 
-	tmp = find_block_of_ptr(ptr, &type);
+	tmp = find_block_of_ptr(ptr, &type, NULL);
 	if (tmp)
 		return (tmp->size);
 	return (0);
@@ -55,7 +55,7 @@ size_t	malloc_size(void *ptr)
 
 size_t	malloc_good_size(size_t size)
 {
-	return (align_size(size, 16));
+	return (align_size(size, 32));
 }
 
 t_block	*defragment_around(t_block *new_freed)
