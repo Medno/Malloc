@@ -6,9 +6,10 @@
 # include <pthread.h>
 
 
-#define NB_ALLOCATION	100
-#define TINY			256
-#define SMALL			1024
+# define NB_ALLOCATION	100
+# define TINY			256
+# define SMALL			4096
+# define ALIGN	16
 
 typedef uint8_t		t_free;
 extern pthread_mutex_t		g_mutex;
@@ -66,8 +67,11 @@ t_alloc				find_type_pool(size_t size);
 
 void				free_n(void *ptr);
 void				*malloc_n(size_t size);
+void				*realloc_n(void *ptr, size_t size);
 
 void				handle_addr(size_t value, int base);
 void	print_all_pools(void);
 void	print_edited_p(t_block *tmp);
+void	print_bucket(t_bucket *tmp);
+
 #endif

@@ -15,34 +15,45 @@
 size_t	compute_size_to_allocate(size_t size, t_alloc type)
 {
 	if (type == TINY_TYPE)
-		return (sizeof(t_bucket) + (TINY + sizeof(t_block)) * NB_ALLOCATION);
+		return (align_size(sizeof(t_bucket), ALIGN) + ((TINY + sizeof(t_block)) * NB_ALLOCATION));
 	else if (type == SMALL_TYPE)
-		return (sizeof(t_bucket) + (SMALL + sizeof(t_block)) * NB_ALLOCATION);
-	return (size + sizeof(t_block));
+		return (align_size(sizeof(t_bucket), ALIGN) + ((SMALL + sizeof(t_block)) * NB_ALLOCATION));
+	return (align_size(sizeof(t_bucket), ALIGN) + size + sizeof(t_block));
 }
 
 void	*extend_heap(size_t size, t_alloc type, t_bucket *last)
 {
-	// t_block		*new_block;
 	size_t		aligned_pages;
 	size_t		size_to_allocate;
 	t_bucket	*new_bucket;
+	t_block	*new_block;
+
+ft_putstr("Extending heap... of type : ");
+handle_addr(type, 10);
+ft_putendl("");
 
 	size_to_allocate = compute_size_to_allocate(size, type);
 	aligned_pages = align_size(size_to_allocate, getpagesize());
 	new_bucket = alloc_mem(last, aligned_pages);
 	if (!new_bucket)
 		return (NULL);
+	new_bucket->prev = last;
 	new_bucket->next = NULL;
-	new_bucket->block = (t_block *)((uintptr_t)new_bucket + sizeof(t_bucket));
-	new_bucket->block->size = aligned_pages - sizeof(t_block);
-	new_bucket->block->prev = NULL;
-	new_bucket->block->next = NULL;
+	new_block = (t_block *)((char *)new_bucket + align_size(sizeof(t_bucket), ALIGN));
+	new_block->size = aligned_pages - sizeof(t_block);
+	new_block->prev = NULL;
+	new_block->next = NULL;
+	new_block->free = 0;
+	new_bucket->block = new_block;
 	if (last)
 		last->next = new_bucket;
 	else
 		g_pool[type] = new_bucket;
-	new_bucket->block->free = 0;
+
+if (last)
+print_bucket(last);
+print_bucket(new_bucket);
+print_all_pools();
 	return (new_bucket->block);
 }
 
@@ -50,7 +61,12 @@ t_block	*split_block(size_t size, t_block *to_split)
 {
 	t_block	*new;
 
-	new = (t_block *)((uintptr_t)to_split + sizeof(t_block) + size);
+print_edited_p(to_split);
+handle_addr(size, 10);
+ft_putendl(" <-- to size");
+
+	new = (t_block *)((char *)to_split + sizeof(t_block) + size);
+
 	new->size = to_split->size - size - sizeof(t_block);
 	new->next = to_split->next;
 	new->prev = to_split;
@@ -59,6 +75,7 @@ t_block	*split_block(size_t size, t_block *to_split)
 		to_split->next->prev = new;
 	to_split->size = size;
 	to_split->next = new;
+	print_edited_p(new);
 	return (new);
 }
 
@@ -67,7 +84,6 @@ t_block	*handle_pool(size_t size, t_alloc type)
 	t_block		*block;
 	t_bucket	*last;
 
-	last = g_pool[type];
 	block = find_available_chunk(size, type, &last);
 	if (type == LARGE_TYPE)
 		return (extend_heap(size, type, last));

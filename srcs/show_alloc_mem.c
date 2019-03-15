@@ -12,7 +12,23 @@
 
 #include "lib_alloc.h"
 
-
+void	print_bucket(t_bucket *tmp)
+{
+	if (!tmp)
+	{
+		ft_putendl("No ptr found");
+		return ;
+	}
+	ft_putstr("|	Address :	|0x");
+	handle_addr((size_t)tmp, 16);
+	ft_putstr("|	Prev :	|0x");
+	handle_addr((size_t)tmp->prev, 16);
+	ft_putstr("|	Next :	|0x");
+	handle_addr((size_t)tmp->next, 16);
+	ft_putstr("|	Block :	|0x");
+	handle_addr((size_t)tmp->block, 16);
+	ft_putendl("|");
+}
 void	print_edited_p(t_block *tmp)
 {
 	if (!tmp)
@@ -52,14 +68,12 @@ void	print_all_pools(void)
 	{
 		ft_putstr("Pool number : |");
 		ft_putnbr(i);
-		ft_putstr("| ");
+		ft_putendl("| ");
 		buck = g_pool[i];
 		while (buck)
 		{
 			tmp = buck->block;
-			handle_addr((size_t)buck, 16);
-			ft_putendl(" Addr of buck");
-
+print_bucket(buck);
 			handle_addr((size_t)tmp, 16);
 			ft_putendl(" Addr of pool");
 			while (tmp)
@@ -90,18 +104,14 @@ void	print_all_pools(void)
 		}
 		i++;
 	}
-	   handle_addr(sizeof(size_t), 10);
-	   ft_putendl("");
-	   handle_addr(sizeof(t_block *), 10);
-	   ft_putendl("");
-	   handle_addr(sizeof(t_free), 10);
-	   ft_putendl("");
+	   // handle_addr(sizeof(t_block), 10);
+	   // ft_putendl("");
 	ft_putendl("=========================================================================================================================\n=========================================================================================================================");
 }
 
 
 
-int		print_pool(t_bucket *pool)
+int		print_pool(t_bucket *pool, uint8_t free)
 {
 	size_t		res;
 	t_block		*tmp;

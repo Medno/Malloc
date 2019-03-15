@@ -18,12 +18,12 @@ t_bucket	*alloc_mem(void *start_addr, size_t size)
 {
 	t_bucket	*tmp;
 
+/*
 handle_addr(size, 10);
 ft_putendl(" <-- Alloc_mem -> size");
-
 handle_addr((size_t)start_addr, 16);
 ft_putendl(" <-- Alloc_mem -> start_addr");
-
+*/
 	if ((tmp = mmap(start_addr, size, PROT_READ | PROT_WRITE,
 		MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
 		return (NULL);
@@ -45,10 +45,12 @@ uint8_t	above_limit(size_t size)
 
 	if (getrlimit(RLIMIT_DATA, &limit))
 		return (1);
-	handle_addr(limit.rlim_cur, 10);
-	ft_putendl(" <-- current limit");
-	handle_addr(size, 10);
-	ft_putendl(" <-- mysize");
+/*
+handle_addr(limit.rlim_cur, 10);
+ft_putendl(" <-- current limit");
+handle_addr(size, 10);
+ft_putendl(" <-- mysize");
+*/
 	if (size > limit.rlim_cur || size == 0)
 		return (1);
 	return (0);
@@ -60,20 +62,28 @@ void	*malloc_n(size_t size)
 	t_block	*result;
 	t_alloc	type;
 
-handle_addr(size, 10);
-ft_putendl(" <-- to allocate | in malloc_n");
-	aligned_size = align_size(size, 32);
+ft_putendl("Beginning of Malloc");
+	aligned_size = align_size(size, ALIGN);
 	if (above_limit(aligned_size))
 		return (NULL);
-// handle_addr(aligned_size, 10);
-// ft_putendl(" <-- to allocate");
+/*
+	handle_addr(size, 10);
+ ft_putendl(" <-- to allocate | in malloc_n");
+ handle_addr(aligned_size, 10);
+ ft_putendl(" <-- to allocate");
+*/
 	type = find_type_pool(aligned_size);
 	result = handle_pool(aligned_size, type);
-handle_addr((size_t)result, 16);
-ft_putendl(" <-- final alloc");
+/*
+	handle_addr((size_t)result, 16);
+	ft_putendl(" <-- final alloc");
+*/
+ft_putendl("End of Malloc");
+	print_edited_p(result);
+
 	if (!result)
 		return (NULL);
-	return ((void *)result + sizeof(t_block));
+	return ((void *)((char *)result + sizeof(t_block)));
 }
 
 void	*malloc(size_t size)
@@ -83,5 +93,8 @@ void	*malloc(size_t size)
 	pthread_mutex_lock(&g_mutex);
 	res = malloc_n(size);
 	pthread_mutex_unlock(&g_mutex);
+/*
+print_all_pools();
+*/
 	return (res);
 }

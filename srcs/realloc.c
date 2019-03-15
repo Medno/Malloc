@@ -18,17 +18,19 @@ void	*new_malloc(size_t size, void *ptr, t_block *block)
 	size_t	min_size;
 
 	new_ptr = malloc_n(size);
-	handle_addr((uintptr_t)new_ptr, 16);
-	ft_putendl(" <-- New pointer");
-
+	/*
+	 handle_addr((uintptr_t)new_ptr, 16);
+	 ft_putendl(" <-- New pointer");
+*/
 	if (!new_ptr)
 		return (NULL);
 	min_size = block->size < size ? block->size : size;
-	handle_addr(size, 10);
-	ft_putendl(" <-- to size");
-	handle_addr(block->size, 10);
-	ft_putendl(" <-- to block size");
-
+	/*
+	 handle_addr(size, 10);
+	 ft_putendl(" <-- to size");
+	 handle_addr(block->size, 10);
+	 ft_putendl(" <-- to block size");
+*/
 	new_ptr = ft_memcpy(new_ptr, ptr, min_size);
 	free_n(ptr);
 	return (new_ptr);
@@ -54,7 +56,7 @@ void	*handle_realloc_block(void *p, size_t size, t_block *block)
 			return (new_malloc(size, p, block));
 	}
 	defragment_around(block->next);
-	return ((void *)block + sizeof(t_block));
+	return ((void *)((char *)block + sizeof(t_block)));
 }
 
 void	*realloc_n(void *ptr, size_t size)
@@ -75,22 +77,27 @@ void	*realloc_n(void *ptr, size_t size)
 	type = TINY_TYPE;
 
 	block = find_block_of_ptr(ptr, &type, &nul);
+	/*
 	if (block)
-	{
-		handle_addr((size_t)block, 16);
-		ft_putendl(" <-- to allocate");
-		handle_addr(block->size, 10);
-		ft_putendl(" <-- to allocate");
+	 {
+	 	handle_addr((size_t)block, 16);
+	 	ft_putendl(" <-- to allocate");
+	 	handle_addr(block->size, 10);
+	 	ft_putendl(" <-- to allocate");
 
-	}
-	aligned_size = align_size(size, 32);
+	 }
+	*/
+	print_edited_p(block);
+	aligned_size = align_size(size, ALIGN);
 	if (!aligned_size)
 		return (NULL);
 	new_type = find_type_pool(aligned_size);
-handle_addr(size, 10);
-ft_putendl(" <-- size before reallocing to allocate");
-handle_addr(new_type, 10);
-ft_putendl(" <-- type before reallocing to allocate");
+	/*
+ handle_addr(size, 10);
+ ft_putendl(" <-- size before reallocing to allocate");
+ handle_addr(new_type, 10);
+ ft_putendl(" <-- type before reallocing to allocate");
+ */
 	if (block && new_type == type && type != LARGE_TYPE)
 		return (handle_realloc_block(ptr, aligned_size, block));
 	else if (block)
@@ -107,10 +114,10 @@ handle_addr((size_t)ptr, 16);
 ft_putendl(" <-- Before realloc");
 handle_addr(size, 10);
 ft_putendl(" <-- to allocate");
+//print_all_pools();
 
-print_all_pools();
 	res = realloc_n(ptr, size);
-print_all_pools();
+// print_all_pools();
 handle_addr((size_t)res, 16);
 ft_putendl(" <-- after realloc");
 	pthread_mutex_unlock(&g_mutex);
