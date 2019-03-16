@@ -6,7 +6,7 @@
 #    By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/08 14:57:58 by pchadeni          #+#    #+#              #
-#    Updated: 2019/03/08 10:51:12 by pchadeni         ###   ########.fr        #
+#    Updated: 2019/03/16 16:31:51 by pchadeni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,7 +92,9 @@ fclean: fcleanlib clean
 fcleanlib:
 	@make fclean -C $(LIB_PATH)
 
-re: fclean all
+re:
+	@$(MAKE) fclean
+	@$(MAKE) all
 
 #------Compilation's flags------#
 

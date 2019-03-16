@@ -6,53 +6,51 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:35:35 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/08 14:23:01 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/16 15:57:18 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lib_alloc.h"
 
+void	desallocate_large(t_alloc type, t_bucket *buck, t_block *found)
+{
+	size_t	buck_size;
+
+	buck_size = align_size(sizeof(t_bucket), ALIGN);
+	if (g_pool[type] == buck)
+		g_pool[type] = (buck->next) ? buck->next : NULL;
+	else
+		buck->prev->next = buck->next;
+	if (buck->next)
+		buck->next->prev = buck->prev;
+	buck->next = NULL;
+	buck->prev = NULL;
+	if ((munmap(buck, found->size + sizeof(t_block) + buck_size)) == -1)
+		ft_putendl_fd("Error unmapping memory", 2);
+	return ;
+}
+
 void	free_n(void *ptr)
 {
-	t_block	*found;
 	t_bucket	*bucket;
-	t_alloc	type;
+	t_block		*found;
+	t_alloc		type;
 
-ft_putendl("Begin of free");
 	type = TINY_TYPE;
+	bucket = g_pool[type];
 	found = find_block_of_ptr(ptr, &type, &bucket);
-/*
-handle_addr((uintptr_t)ptr, 16);
-ft_putendl(" <-- ptr");
-handle_addr((size_t)found, 16);
-ft_putendl(" <-- ptr found");
-print_edited_p(found);
-handle_addr(type, 10);
-ft_putendl(" <-- corresponding type found");
-*/
 	if (!found)
 		return ;
-	found->free = 1;
 	if (type == LARGE_TYPE)
+		desallocate_large(type, bucket, found);
+	else
 	{
-		if (g_pool[type] == bucket)
-			g_pool[type] = (bucket->next) ? bucket->next : NULL;
-		else
-			bucket->prev->next = bucket->next;
-		bucket->next = NULL;
-		bucket->prev = NULL;
-		if ((munmap(bucket,
-			found->size + sizeof(t_block) + sizeof(t_bucket))) == -1)
-			ft_putendl_fd("Error unmapping memory", 2);
-ft_putendl("After free");
-		return ;
+		found->free = 1;
+		if (found->prev && found->prev->free)
+			found = defragment_around(found->prev);
+		if (found)
+			defragment_around(found);
 	}
-	if (found->prev && found->prev->free)
-		found = defragment_around(found->prev);
-	if (found)
-		defragment_around(found);
-// print_all_pools();
-ft_putendl("After free");
 	return ;
 }
 
@@ -60,7 +58,5 @@ void	free(void *ptr)
 {
 	pthread_mutex_lock(&g_mutex);
 	free_n(ptr);
-// print_all_pools();
-
 	pthread_mutex_unlock(&g_mutex);
 }

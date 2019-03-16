@@ -18,13 +18,10 @@ void	*calloc(size_t count, size_t size)
 	size_t	size_to_bzero;
 
 	pthread_mutex_lock(&g_mutex);
-ft_putendl("Begin Calloc");
-
 	result = malloc_n(count * size);
 	size_to_bzero = size == 0 ? ALIGN : size;
 	if (result)
 		ft_bzero(result, count * size_to_bzero);
-ft_putendl("End of Calloc");
 	pthread_mutex_unlock(&g_mutex);
 	return (result);
 }
@@ -33,13 +30,11 @@ void	*reallocf(void *ptr, size_t size)
 {
 	void	*res;
 
-ft_putendl("Begin reallocf");
 	pthread_mutex_lock(&g_mutex);
 	res = realloc_n(ptr, size);
 	if (!res && ptr)
 		free_n(ptr);
 	pthread_mutex_unlock(&g_mutex);
-ft_putendl("After reallocf");
 	return (res);
 }
 
