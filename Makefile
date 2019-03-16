@@ -6,15 +6,15 @@
 #    By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/08 14:57:58 by pchadeni          #+#    #+#              #
-#    Updated: 2019/02/25 16:37:35 by pchadeni         ###   ########.fr        #
+#    Updated: 2019/03/16 16:31:51 by pchadeni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #------Name of the project------#
 
 LINK = libft_malloc.so
-#NAME = test
 NAME = libft_malloc_$(HOSTTYPE).so
+
 #------Assign HOSTTYPE------#
 
 ifeq ($(HOSTTYPE),)
@@ -30,9 +30,8 @@ MALLOC =	malloc.c		\
 			handle_addr.c	\
 			show_alloc_mem.c\
 			handle_pool.c	\
-			bonus.c			\
-			defragment.c
-#		main.c		\
+			align.c	\
+			bonus.c
 
 OBJ += $(addprefix ./$(OBJ_PATH)/, $(MALLOC:.c=.o))
 
@@ -58,7 +57,6 @@ all: $(OBJ_PATH) makelib $(NAME)
 $(NAME): $(OBJ)
 	@printf "\33[2KObjects created $(BOLD_GREEN)✓$(EOC)\n"
 	@printf "Start making $(NAME)... "
-#	@$(CC) $(C_FLAGS) $(FLAGS) $(INC) -o $@ $^ $(LIB)
 	@$(CC) $(C_FLAGS) $(FLAGS) $(INC) -Wpadded -Llibft -lft -shared -o $@ $^ $(LIB)
 	@if [ -e $(LINK) ]; \
 	then \
@@ -94,7 +92,9 @@ fclean: fcleanlib clean
 fcleanlib:
 	@make fclean -C $(LIB_PATH)
 
-re: fclean all
+re:
+	@$(MAKE) fclean
+	@$(MAKE) all
 
 #------Compilation's flags------#
 
