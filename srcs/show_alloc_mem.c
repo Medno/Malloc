@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:39:52 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/16 16:29:09 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/16 18:15:35 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ void	show_alloc_mem(void)
 	uint8_t		i;
 	t_bucket	*tmp;
 
-	i = 0;
+	i = -1;
 	size = 0;
 	pthread_mutex_lock(&g_mutex);
-	while (i < 3)
+	while (++i < 3)
 	{
 		if (!i)
 			ft_putstr("TINY : ");
@@ -63,7 +63,6 @@ void	show_alloc_mem(void)
 		handle_addr((size_t)tmp, 16);
 		ft_putchar('\n');
 		size += print_pool(tmp, 0);
-		i++;
 	}
 	ft_putstr("Total : ");
 	ft_putnbr(size);
@@ -77,10 +76,10 @@ void	show_alloc_mem_hex(void)
 	uint8_t		i;
 	t_bucket	*tmp;
 
-	i = 0;
+	i = -1;
 	size = 0;
 	pthread_mutex_lock(&g_mutex);
-	while (i < 3)
+	while (++i < 3)
 	{
 		if (!i)
 			ft_putstr("TINY : ");
@@ -93,11 +92,9 @@ void	show_alloc_mem_hex(void)
 		handle_addr((size_t)tmp, 16);
 		ft_putchar('\n');
 		size += print_pool(tmp, 1);
-		i++;
 	}
 	ft_putstr("Total : ");
 	ft_putnbr(size);
 	ft_putendl(" octets");
 	pthread_mutex_unlock(&g_mutex);
-
 }
