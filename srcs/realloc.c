@@ -53,6 +53,8 @@ static void	*handle_realloc(void *ptr, size_t size, t_block *bl, t_alloc type)
 {
 	t_alloc	new_type;
 
+	if (size == bl->size)
+		return (ptr);
 	new_type = find_type_pool(size);
 	if (new_type == type && type != LARGE_TYPE)
 		return (handle_realloc_block(ptr, size, bl));
@@ -78,8 +80,6 @@ void		*realloc_n(void *ptr, size_t size)
 	aligned_size = align_size(size, ALIGN);
 	if (!aligned_size)
 		return (NULL);
-	if (aligned_size == block->size)
-		return (ptr);
 	return (block ? handle_realloc(ptr, aligned_size, block, type) : NULL);
 }
 
