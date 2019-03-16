@@ -49,6 +49,7 @@ void	show_alloc_mem(void)
 
 	i = 0;
 	size = 0;
+	pthread_mutex_lock(&g_mutex);
 	while (i < 3)
 	{
 		if (!i)
@@ -67,6 +68,7 @@ void	show_alloc_mem(void)
 	ft_putstr("Total : ");
 	ft_putnbr(size);
 	ft_putendl(" octets");
+	pthread_mutex_unlock(&g_mutex);
 }
 
 void	show_alloc_mem_hex(void)
@@ -77,6 +79,7 @@ void	show_alloc_mem_hex(void)
 
 	i = 0;
 	size = 0;
+	pthread_mutex_lock(&g_mutex);
 	while (i < 3)
 	{
 		if (!i)
@@ -95,4 +98,6 @@ void	show_alloc_mem_hex(void)
 	ft_putstr("Total : ");
 	ft_putnbr(size);
 	ft_putendl(" octets");
+	pthread_mutex_unlock(&g_mutex);
+
 }
