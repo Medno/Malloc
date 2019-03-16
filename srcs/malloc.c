@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:36:30 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/06 16:38:05 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/16 16:13:51 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-t_block	*alloc_mem(void *start_addr, size_t size)
+t_bucket		*alloc_mem(void *start_addr, size_t size)
 {
-	t_block	*tmp;
+	t_bucket	*tmp;
 
 	if ((tmp = mmap(start_addr, size, PROT_READ | PROT_WRITE,
 		MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
@@ -24,7 +24,7 @@ t_block	*alloc_mem(void *start_addr, size_t size)
 	return (tmp);
 }
 
-t_alloc	find_type_pool(size_t size)
+t_alloc			find_type_pool(size_t size)
 {
 	if (size <= TINY)
 		return (TINY_TYPE);
@@ -33,33 +33,39 @@ t_alloc	find_type_pool(size_t size)
 	return (LARGE_TYPE);
 }
 
-void	*malloc_n(size_t size)
+static uint8_t	above_limit(size_t size)
+{
+	struct rlimit	limit;
+
+	if (getrlimit(RLIMIT_DATA, &limit))
+		return (1);
+	if (size > limit.rlim_cur || size == 0)
+		return (1);
+	return (0);
+}
+
+void			*malloc_n(size_t size)
 {
 	size_t	aligned_size;
 	t_block	*result;
 	t_alloc	type;
 
-handle_addr(size, 10);
-ft_putendl(" <-- to allocate");
-	aligned_size = align_size(size, 16);
-handle_addr(aligned_size, 10);
-ft_putendl(" <-- to allocate");
+	aligned_size = align_size(size, ALIGN);
+	if (above_limit(aligned_size))
+		return (NULL);
 	type = find_type_pool(aligned_size);
 	result = handle_pool(aligned_size, type);
-	return ((void *)result + sizeof(t_block));
+	if (!result)
+		return (NULL);
+	return ((void *)((char *)result + sizeof(t_block)));
 }
 
-void	*malloc(size_t size)
+void			*malloc(size_t size)
 {
 	void	*res;
 
 	pthread_mutex_lock(&g_mutex);
-ft_putendl("Before malloc");
-//print_all_pools();
 	res = malloc_n(size);
-//print_all_pools();
-handle_addr((size_t)res, 16);
-ft_putendl(" <-- After malloc");
 	pthread_mutex_unlock(&g_mutex);
 	return (res);
 }

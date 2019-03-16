@@ -6,7 +6,7 @@
 #    By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/08 14:57:58 by pchadeni          #+#    #+#              #
-#    Updated: 2018/06/26 14:47:07 by pchadeni         ###   ########.fr        #
+#    Updated: 2019/03/16 16:32:42 by pchadeni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -172,7 +172,9 @@ fclean: clean
 		echo "$(BOLD_GREEN)fclean ✓$(EOC)"; \
 	fi;
 
-re: fclean all
+re:
+	@$(MAKE) fclean
+	@$(MAKE) all
 
 #------Define colors------#
 

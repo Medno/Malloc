@@ -6,7 +6,7 @@
 #    By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/08 14:57:58 by pchadeni          #+#    #+#              #
-#    Updated: 2019/03/07 09:48:32 by pchadeni         ###   ########.fr        #
+#    Updated: 2019/03/16 16:31:51 by pchadeni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ MALLOC =	malloc.c		\
 			handle_addr.c	\
 			show_alloc_mem.c\
 			handle_pool.c	\
+			align.c	\
 			bonus.c
 
 OBJ += $(addprefix ./$(OBJ_PATH)/, $(MALLOC:.c=.o))
@@ -91,7 +92,9 @@ fclean: fcleanlib clean
 fcleanlib:
 	@make fclean -C $(LIB_PATH)
 
-re: fclean all
+re:
+	@$(MAKE) fclean
+	@$(MAKE) all
 
 #------Compilation's flags------#
 
