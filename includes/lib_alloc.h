@@ -34,6 +34,7 @@ typedef struct		s_block
 typedef struct		s_bucket
 {
 	t_block			*block;
+	void				*end;
 	struct s_bucket	*next;
 	struct s_bucket	*prev;
 }					t_bucket;

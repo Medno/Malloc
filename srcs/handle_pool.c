@@ -14,11 +14,12 @@
 
 size_t	compute_size_to_allocate(size_t size, t_alloc type)
 {
+	size_t	bucket_size = align_size(sizeof(t_bucket), ALIGN);
 	if (type == TINY_TYPE)
-		return (align_size(sizeof(t_bucket), ALIGN) + ((TINY + sizeof(t_block)) * NB_ALLOCATION));
+		return (bucket_size + ((TINY + sizeof(t_block)) * NB_ALLOCATION));
 	else if (type == SMALL_TYPE)
-		return (align_size(sizeof(t_bucket), ALIGN) + ((SMALL + sizeof(t_block)) * NB_ALLOCATION));
-	return (align_size(sizeof(t_bucket), ALIGN) + size + sizeof(t_block));
+		return (bucket_size + ((SMALL + sizeof(t_block)) * NB_ALLOCATION));
+	return (bucket_size + size + sizeof(t_block));
 }
 
 void	*extend_heap(size_t size, t_alloc type, t_bucket *last)
@@ -39,6 +40,7 @@ ft_putendl("");
 		return (NULL);
 	new_bucket->prev = last;
 	new_bucket->next = NULL;
+	new_bucket->end = (char *)new_bucket + aligned_pages;
 	new_block = (t_block *)((char *)new_bucket + align_size(sizeof(t_bucket), ALIGN));
 	new_block->size = aligned_pages - sizeof(t_block);
 	new_block->prev = NULL;
