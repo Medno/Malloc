@@ -17,10 +17,10 @@
 # include <sys/mman.h>
 # include <pthread.h>
 
+# define ALIGN			16
 # define NB_ALLOCATION	100
 # define TINY			256
 # define SMALL			4096
-# define ALIGN	16
 
 typedef uint8_t		t_free;
 extern pthread_mutex_t		g_mutex;
@@ -78,4 +78,6 @@ void				free_n(void *ptr);
 void				*malloc_n(size_t size);
 void				*realloc_n(void *ptr, size_t size);
 
+void				check_empty_buckets(t_bucket *buck, t_alloc type);
+void				desallocate_large(t_alloc t, t_bucket *b, t_block *f);
 #endif

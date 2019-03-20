@@ -23,14 +23,15 @@ endif
 
 #------All sources------#
 
-MALLOC =	malloc.c		\
-			find_in_pool.c	\
-			free.c			\
-			realloc.c		\
-			handle_addr.c	\
-			show_alloc_mem.c\
-			handle_pool.c	\
-			align.c	\
+MALLOC =	malloc.c			\
+			free.c				\
+			realloc.c			\
+			show_alloc_mem.c	\
+			find_in_pool.c		\
+			handle_addr.c		\
+			handle_pool.c		\
+			align.c				\
+			desalloc_buckets.c	\
 			bonus.c
 
 OBJ += $(addprefix ./$(OBJ_PATH)/, $(MALLOC:.c=.o))

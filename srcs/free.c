@@ -12,24 +12,6 @@
 
 #include "lib_alloc.h"
 
-void	desallocate_large(t_alloc type, t_bucket *buck, t_block *found)
-{
-	size_t	buck_size;
-
-	buck_size = align_size(sizeof(t_bucket), ALIGN);
-	if (g_pool[type] == buck)
-		g_pool[type] = (buck->next) ? buck->next : NULL;
-	else
-		buck->prev->next = buck->next;
-	if (buck->next)
-		buck->next->prev = buck->prev;
-	buck->next = NULL;
-	buck->prev = NULL;
-	if ((munmap(buck, found->size + sizeof(t_block) + buck_size)) == -1)
-		ft_putendl_fd("Error unmapping memory", 2);
-	return ;
-}
-
 void	free_n(void *ptr)
 {
 	t_bucket	*bucket;
@@ -51,6 +33,7 @@ void	free_n(void *ptr)
 		if (found)
 			defragment_around(found);
 	}
+	check_empty_buckets(bucket, type);
 	return ;
 }
 
