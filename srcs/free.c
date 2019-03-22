@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:35:35 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/16 15:57:18 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/22 09:49:58 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	free_n(void *ptr)
 			found = defragment_around(found->prev);
 		if (found)
 			defragment_around(found);
+		check_empty_buckets(bucket, type);
 	}
-	check_empty_buckets(bucket, type);
 	return ;
 }
 

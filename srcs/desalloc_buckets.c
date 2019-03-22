@@ -6,7 +6,7 @@
 /*   By: pchadeni <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 16:35:35 by pchadeni          #+#    #+#             */
-/*   Updated: 2019/03/16 15:57:18 by pchadeni         ###   ########.fr       */
+/*   Updated: 2019/03/22 09:50:18 by pchadeni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	bucket_is_empty(t_bucket *buck)
 {
-	return (buck && !buck->block->next);
+	return (buck && buck->block && !(buck->block->next));
 }
 
 void		desallocate_large(t_alloc type, t_bucket *buck, t_block *found)
